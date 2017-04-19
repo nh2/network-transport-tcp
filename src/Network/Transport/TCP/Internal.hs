@@ -271,7 +271,7 @@ recvExact sock len = go [] len
     go acc 0 = return (reverse acc)
     go acc l = do
       bs <- NBS.recv sock (fromIntegral l `min` smallChunkSize)
-      N.setSocketOption sock (N.CustomSockOpt (6, 12)) 1 -- 6 is IPPROTO_TCP, 12 is TCP_QUICKACK
+      N.setSocketOption sock (N.CustomSockOpt (6, 12)) 0 -- 6 is IPPROTO_TCP, 12 is TCP_QUICKACK
       if BS.null bs
         then throwIO (userError "recvExact: Socket closed")
         else go (bs : acc) (l - fromIntegral (BS.length bs))
